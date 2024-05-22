@@ -1,0 +1,7 @@
+/lib
+/bin
+/.vscode
+/.idea
+*.class
+*.log
+*.db

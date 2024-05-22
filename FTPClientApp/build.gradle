@@ -1,0 +1,28 @@
+plugins {
+    id 'java'  
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        
+    }
+}
+dependencies {
+        implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+        implementation 'org.apache.sshd:sshd-core:2.7.0'
+        
+    }
+
+
+project(':client') {
+    // Client-specific configurations can go here
+}
+
+project(':server') {
+    // Server-specific configurations can go here
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

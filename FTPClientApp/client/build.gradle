@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+    
+}
+
+dependencies {
+    implementation 'org.apache.sshd:sshd-core:2.7.0'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'client.FTPClientApp'
+    }
+}
+test {
+    useJUnitPlatform()
+}
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+
