@@ -17,7 +17,8 @@ I.Cách khởi tạo môi trường để phục vụ chạy dự án này
         
         Link hướng dẫn từ lớp thực hành : https://j8uzdb.nipponbaiku.com/?login_key=pwJEYjWGmvze
 
-II. Khởi tạo Cơ Sở Dữ Liệu - SQLite 
+II. Xem Cơ Sở Dữ Liệu - SQLite 
+
         - Tải công cụ Gradle (công cụ tự động hóa quá trình build và quản lý các thư viện, nhằm tối ưu hóa công đoạn biên dịch, đóng gói, thuận tiện hơn cho việc phát triển phần mềm.)
         Link tải : https://gradle.org/install/#manually
         Link hướng dẫn trên Window : https://www.youtube.com/watch?v=XgIuKjJrs5M&t=124s
@@ -25,13 +26,21 @@ II. Khởi tạo Cơ Sở Dữ Liệu - SQLite
         - Học cách sử dụng Terminal / Git đều được nhưng ở đồ án này cta sử dụng terminal được tích hợp sẵn trên vscode
         Link tìm hiểu : https://www.youtube.com/watch?v=cDsXZ_PEDGk
         
-        Đồ án nãy đã được cấu hình gradle trước đó, khi clone đồ án về máy local bạn chỉ cần : 
+        Đồ án nàydc đã được cấu hình gradle trước đó, khi clone đồ án về máy local bạn chỉ cần : 
         1. Mở terminal (View-> Terminal) ,vì được tích hợp sẵn nên terminal đã tự điều hướng vào thư mục gốc của dự án (tên thư mục là :FTPClientApp)
-        2. Chạy lệnh( .\gradlew.bat clean build )để xây dựng dự án và refresh trên máy local của bạn
-        3. Đảm bảo có 2 file gradlew.bat và settings.gradle.kts trong project
+        2. Đảm bảo có 2 file gradlew.bat và settings.gradle.kts trong project 
+        3. Chạy lệnh( .\gradlew.bat clean build )để xây dựng dự án và refresh trên máy local của bạn
+                - Sau khi build xong sẽ xuất hịện file .gradle và build
 
+        4. Tải SQLite .Link hướng dẫn nè : https://www.youtube.com/watch?v=-bDwNR_C0dE
 
-III. Khởi tạo Cơ Sở Dữ Liệu - SQLite       
+        5. Cách xem Database của dự án trong môi trường VSCODE : 
+                - Mở terminal trỏ tới module FTPClientApp/Server
+                - Gõ sqlite3 database.db để sqlite compile file database.db
+                - Gõ .tables hoặc .schema để xem CSDL của hệ thống 
+        
+
+      
         
 
         

@@ -25,16 +25,17 @@ public class DatabaseManager {
                 Statement stmt = conn.createStatement();
 
                 /* Tạo bảng User */
-                String sqlUsers = "  CREATE TABLE IF NOT EXISTS users (\n"
+                String sqlUsers = "CREATE TABLE IF NOT EXISTS users (\n"
                         + " id       INTEGER PRIMARY KEY AUTOINCREMENT,\n"
                         + " username TEXT NOT NULL UNIQUE,\n"
                         + " password TEXT NOT NULL,\n"
                         + " email    TEXT NOT NULL\n "
                         + ");";
                 stmt.execute(sqlUsers);
+                System.out.println("Bảng users đã được tạo thành công.");
 
-                /* Tạo bảo files */
-                String sqlFiles = "   CREATE TABLE IF NOT EXISTS files (\n"
+                /* Tạo bảng files */
+                String sqlFiles = "CREATE TABLE IF NOT EXISTS files (\n"
                         + " id        INTEGER PRIMARY KEY AUTOINCREMENT,\n"
                         + " user_id   INTEGER,\n"
                         + " file_name TEXT NOT NULL,\n"
@@ -42,9 +43,10 @@ public class DatabaseManager {
                         + " FOREIGN KEY (user_id) REFERENCES users (id)\n"
                         + ");";
                 stmt.execute(sqlFiles);
+                System.out.println("Bảng files đã được tạo thành công.");
 
                 /* Tạo bảng folders */
-                String sqlFolders = "        CREATE TABLE IF NOT EXISTS folders (\n"
+                String sqlFolders = "CREATE TABLE IF NOT EXISTS folders (\n"
                         + " id               INTEGER PRIMARY KEY AUTOINCREMENT,\n"
                         + " user_id          INTEGER,\n"
                         + " folder_name      TEXT NOT NULL,\n"
@@ -52,9 +54,10 @@ public class DatabaseManager {
                         + " FOREIGN KEY (user_id) REFERENCES users (id)\n"
                         + ");";
                 stmt.execute(sqlFolders);
+                System.out.println("Bảng folders đã được tạo thành công.");
 
-                /* Tạo bảng image */
-                String sqlImages = "   CREATE TABLE IF NOT EXISTS images (\n"
+                /* Tạo bảng images */
+                String sqlImages = "CREATE TABLE IF NOT EXISTS images (\n"
                         + " id         INTEGER PRIMARY KEY AUTOINCREMENT,\n"
                         + " user_id    INTEGER,\n"
                         + " image_name TEXT NOT NULL,\n"
@@ -62,7 +65,7 @@ public class DatabaseManager {
                         + " FOREIGN KEY (user_id) REFERENCES users (id)\n"
                         + ");";
                 stmt.execute(sqlImages);
-                System.out.println("Các bảng đã được tạo thành công.");
+                System.out.println("Bảng images đã được tạo thành công.");
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
