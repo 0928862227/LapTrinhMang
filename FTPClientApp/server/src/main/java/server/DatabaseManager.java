@@ -1,15 +1,12 @@
 package server;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.*;
 
 import model.File;
+import model.Folder;
+import model.Image;
 
 public class DatabaseManager {
     private static final String URL = "jdbc:sqlite:server/database.db";
@@ -233,6 +230,193 @@ public class DatabaseManager {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
             System.out.println("File đã được xóa thành công.");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /*------------------------------------CRUD FOLDER------------------------------------- */
+
+    /* */
+    public boolean createFolder(int userId, String folderName, Integer parentFolderId) {
+        String sql = "INSERT INTO folders(user_id, folder_name, parent_folder_id) VALUES(?, ?, ?)";
+
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, folderName);
+            pstmt.setObject(3, parentFolderId, Types.INTEGER);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /* */
+    public List<Folder> getAllFolders() {
+        List<Folder> folders = new ArrayList<>();
+        String sql = "SELECT * FROM folders";
+
+        try (Connection conn = connect();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Folder folder = new Folder(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getString("folder_name"),
+                        rs.getObject("parent_folder_id") != null ? rs.getInt("parent_folder_id") : null);
+                folders.add(folder);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return folders;
+    }
+
+    /* */
+    public Folder getFolderById(int id) {
+        String sql = "SELECT * FROM folders WHERE id = ?";
+        Folder folder = null;
+
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                folder = new Folder(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getString("folder_name"),
+                        rs.getObject("parent_folder_id") != null ? rs.getInt("parent_folder_id") : null);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return folder;
+    }
+
+    /* */
+    public boolean updateFolder(int id, int userId, String folderName, Integer parentFolderId) {
+        String sql = "UPDATE folders SET user_id = ?, folder_name = ?, parent_folder_id = ? WHERE id = ?";
+
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, folderName);
+            pstmt.setObject(3, parentFolderId, Types.INTEGER);
+            pstmt.setInt(4, id);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /* */
+    public boolean deleteFolder(int id) {
+        String sql = "DELETE FROM folders WHERE id = ?";
+
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /*---------------------------------CRUD IMAGE-------------------------------------- ---*/
+    public boolean createImage(Image image) {
+        String sql = "INSERT INTO images(user_id, image_name, image_data) VALUES(?,?,?)";
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, image.getUserId());
+            pstmt.setString(2, image.getImageName());
+            pstmt.setBytes(3, image.getImageData());
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /* */
+    public Image getImageById(int id) {
+        String sql = "SELECT * FROM images WHERE id = ?";
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new Image(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getString("image_name"),
+                        rs.getBytes("image_data"));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    /* */
+    public List<Image> getAllImages() {
+        List<Image> images = new ArrayList<>();
+        String sql = "SELECT * FROM images";
+        try (Connection conn = connect();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                images.add(new Image(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getString("image_name"),
+                        rs.getBytes("image_data")));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return images;
+    }
+
+    /* */
+    public boolean updateImage(Image image) {
+        String sql = "UPDATE images SET user_id = ?, image_name = ?, image_data = ? WHERE id = ?";
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, image.getUserId());
+            pstmt.setString(2, image.getImageName());
+            pstmt.setBytes(3, image.getImageData());
+            pstmt.setInt(4, image.getId());
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /* */
+    public boolean deleteImage(int id) {
+        String sql = "DELETE FROM images WHERE id = ?";
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());

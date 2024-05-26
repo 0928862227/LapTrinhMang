@@ -43,7 +43,7 @@ public class FileView {
         }
     }
 
-    private void uploadFile() {
+    public void uploadFile() {
         System.out.print("Nhập ID người dùng: ");
         int userId = scanner.nextInt();
         scanner.nextLine(); // Consume newline
@@ -69,7 +69,7 @@ public class FileView {
         }
     }
 
-    private void displayAllFiles() {
+    public void displayAllFiles() {
         List<File> files = fileController.getAllFiles();
         for (File file : files) {
             System.out.println(
@@ -77,7 +77,7 @@ public class FileView {
         }
     }
 
-    private void updateFile() {
+    public void updateFile() {
         System.out.print("Nhập ID file: ");
         int id = scanner.nextInt();
         scanner.nextLine(); // Consume newline
@@ -107,7 +107,7 @@ public class FileView {
         }
     }
 
-    private void deleteFile() {
+    public void deleteFile() {
         System.out.print("Nhập ID file: ");
         int id = scanner.nextInt();
 
@@ -122,4 +122,5 @@ public class FileView {
         FileView fileView = new FileView();
         fileView.displayMenu();
     }
+
 }
