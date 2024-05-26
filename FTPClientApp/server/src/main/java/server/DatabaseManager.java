@@ -2,8 +2,12 @@ package server;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseManager {
     private static final String URL = "jdbc:sqlite:server/database.db";
@@ -72,7 +76,91 @@ public class DatabaseManager {
         }
     }
 
+    /*-------------------------------------CRUD USER------------- ------------------*/
+
+    public static boolean createUser(String username, String password, String email) {
+        String sql = "INSERT INTO users(username, password, email) VALUES(?, ?, ?)";
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            pstmt.setString(3, email);
+            pstmt.executeUpdate();
+            System.out.println("Người dùng đã được thêm thành công.");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /* */
+    public static List<String> readAllUsers() {
+        String sql = "SELECT * FROM users";
+        List<String> users = new ArrayList<>();
+
+        try (Connection conn = connect();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                String user = "ID: " + rs.getInt("id") + ", Username: " + rs.getString("username") + ", Email: "
+                        + rs.getString("email");
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return users;
+    }
+
+    /* */
+    public static boolean updateUser(int id, String username, String password, String email) {
+        String sql = "UPDATE users SET username = ?, password = ?, email = ? WHERE id = ?";
+
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, username);
+            pstmt.setString(2, password);
+            pstmt.setString(3, email);
+            pstmt.setInt(4, id);
+            pstmt.executeUpdate();
+            System.out.println("Người dùng đã được cập nhật thành công.");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /* */
+    public static boolean deleteUser(int id) {
+        String sql = "DELETE FROM users WHERE id = ?";
+
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+            System.out.println("Người dùng đã được xóa thành công.");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
     public static void main(String[] args) {
-        createNewDatabase();
+        // createNewDatabase();
+
+        // createUser("nhu", "123", "nhu12@gmail.com");
+
+        /*
+         * List<String> users = readAllUsers();
+         * for (String user : users) {
+         * System.out.println(user);
+         * }
+         */
+
+        // updateUser(1, "updateduser", "updatedpassword", "updateduser@example.com");
+
+        // deleteUser(1);
+
     }
 }
