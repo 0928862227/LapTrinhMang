@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.File;
+
 public class DatabaseManager {
     private static final String URL = "jdbc:sqlite:server/database.db";
 
@@ -76,7 +78,7 @@ public class DatabaseManager {
         }
     }
 
-    /*-------------------------------------CRUD USER------------- ------------------*/
+    /*-------------------------------------CRUD USER------------------- ------------------*/
 
     public static boolean createUser(String username, String password, String email) {
         String sql = "INSERT INTO users(username, password, email) VALUES(?, ?, ?)";
@@ -139,6 +141,98 @@ public class DatabaseManager {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
             System.out.println("Người dùng đã được xóa thành công.");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /*-------------------------------------CRUD FILES------------------- ------------------*/
+
+    /* */
+    public static boolean createFile(File file) {
+        String sql = "INSERT INTO files(user_id, file_name, file_data) VALUES(?, ?, ?)";
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, file.getUserId());
+            pstmt.setString(2, file.getFileName());
+            pstmt.setBytes(3, file.getFileData());
+            pstmt.executeUpdate();
+            System.out.println("File đã được thêm thành công.");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /* */
+    public static File readFile(int id) {
+        String sql = "SELECT * FROM files WHERE id = ?";
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                File file = new File();
+                file.setId(rs.getInt("id"));
+                file.setUserId(rs.getInt("user_id"));
+                file.setFileName(rs.getString("file_name"));
+                file.setFileData(rs.getBytes("file_data"));
+                return file;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    /* */
+    public static List<File> readAllFiles() {
+        String sql = "SELECT * FROM files";
+        List<File> files = new ArrayList<>();
+
+        try (Connection conn = connect();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                File file = new File();
+                file.setId(rs.getInt("id"));
+                file.setUserId(rs.getInt("user_id"));
+                file.setFileName(rs.getString("file_name"));
+                file.setFileData(rs.getBytes("file_data"));
+                files.add(file);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return files;
+    }
+
+    /* */
+    public static boolean updateFile(File file) {
+        String sql = "UPDATE files SET user_id = ?, file_name = ?, file_data = ? WHERE id = ?";
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, file.getUserId());
+            pstmt.setString(2, file.getFileName());
+            pstmt.setBytes(3, file.getFileData());
+            pstmt.setInt(4, file.getId());
+            pstmt.executeUpdate();
+            System.out.println("File đã được cập nhật thành công.");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /* */
+    public static boolean deleteFile(int id) {
+        String sql = "DELETE FROM files WHERE id = ?";
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+            System.out.println("File đã được xóa thành công.");
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
