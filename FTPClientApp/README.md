@@ -1,4 +1,4 @@
-DOC - HƯỚNG DẪN THAM GIA XÂY DỰNG ĐỒ ÁN
+-------------------------------------------------------------DOC - HƯỚNG DẪN THAM GIA XÂY DỰNG ĐỒ ÁN----------------------------------------------------------------
 
 Project Plan Dự Án : https://sthuflitedu-my.sharepoint.com/:x:/r/personal/21dh114245_st_huflit_edu_vn/_layouts/15/Doc.aspx?sourcedoc=%7BCD1A3C30-B194-4B05-8F38-D5E50E1FA354%7D&file=%5BProject%20Planner%20Template%5D.xlsx&action=default&mobileredirect=true
 
@@ -6,8 +6,7 @@ I.Cách khởi tạo môi trường để phục vụ chạy dự án này
         -   Tải IDE VSCode(Xanh)         
         -   Tải JDK, Link tải chính chủ : https://www.oracle.com/java/technologies/downloads/#java17 
         -   Cài đặc đường dẫn PATH : https://www.youtube.com/watch?v=z0jwhg3Std4
-        -   Vì xài VScode nên tải thêm 1 số Extensions(ctrl + shift + X ): 
-                -   Language Support for Java(TM) by Ret Had
+        -   Vì xài VScode nên tải thêm 1 số Extensions(ctrl + shift + X ):              
                 -   Java Language Support
                 -   vscode-icons
                 -   Gradle for Java
@@ -15,6 +14,7 @@ I.Cách khởi tạo môi trường để phục vụ chạy dự án này
                 -   Project Manager for Java
                 -   Debugger for Java
                 -   Test Runner for Java
+                -   Language Support for Java(TM) by Ret Had
 
         
         Link hướng dẫn từ lớp thực hành : https://j8uzdb.nipponbaiku.com/?login_key=pwJEYjWGmvze
@@ -28,7 +28,7 @@ II. Xem Cơ Sở Dữ Liệu - SQLite
         - Học cách sử dụng Terminal / Git đều được nhưng ở đồ án này cta sử dụng terminal được tích hợp sẵn trên vscode
         Link tìm hiểu : https://www.youtube.com/watch?v=cDsXZ_PEDGk
         
-        Đồ án nàydc đã được cấu hình gradle trước đó, khi clone đồ án về máy local bạn chỉ cần : 
+        Đồ án này đã được cấu hình gradle trước đó, khi clone đồ án về máy local bạn chỉ cần : 
         1. Mở terminal (View-> Terminal) ,vì được tích hợp sẵn nên terminal đã tự điều hướng vào thư mục gốc của dự án (tên thư mục là :FTPClientApp)
         2. Đảm bảo có 2 file gradlew.bat và settings.gradle.kts trong project 
         3. Chạy lệnh( .\gradlew.bat clean build )để xây dựng dự án và refresh trên máy local của bạn
@@ -40,7 +40,14 @@ II. Xem Cơ Sở Dữ Liệu - SQLite
                 - Mở terminal trỏ tới module FTPClientApp/Server
                 - Gõ sqlite3 database.db để sqlite compile file database.db
                 - Gõ .tables hoặc .schema để xem CSDL của hệ thống 
-        
+
+
+III. Xây dựng, phát triển giao diện phía Client (JavaFX) 
+        -Link tải nền tảng JavaFX : https://gluonhq.com/products/javafx/ và công cụ thiết kế Scene Builder : https://gluonhq.com/products/scene-builder/#download
+        -Link hướng dẫn cài đặt : https://www.youtube.com/watch?v=AubJaosfI-0
+        - Đảm bảo rằng cấu hình launch.json chỉ định đúng module và đường dẫn JavaFX SDK
+        - Chỉ cài đặt ở phía module client .Nếu vướng phải nút thắt nào hãy đọc thêm docs này : https://openjfx.io/openjfx-docs/
+
 
       
         
