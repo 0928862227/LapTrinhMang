@@ -6,17 +6,45 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Current File",
+            "name": "TCPClient",
             "request": "launch",
-            "mainClass": "${file}"
+            "mainClass": "client.TCPClient",
+            "projectName": "client"
+        },
+        {
+            "type": "java",
+            "name": "TCPClient",
+            "request": "launch",
+            "mainClass": "TCPClient",
+            "projectName": "client"
+        },
+        {
+            "type": "java",
+            "name": "TCPServer",
+            "request": "launch",
+            "mainClass": "server.TCPServer",
+            "projectName": "server"
         },
         {
             "type": "java",
             "name": "Launch FTPClientApp",
             "request": "launch",
             "mainClass": "client.FTPClientApp",
-            "vmArgs": "--module-path \"C:/Program Files/Java/javafx-sdk-17.0.11/lib\" --add-modules javafx.controls,javafx.fxml",
+            "vmArgs": "--module-path \"F:/Java/javafx-sdk-17.0.11/lib\" --add-modules javafx.controls,javafx.fxml",
             "projectName": "client"
+        },
+        {
+            "type": "java",
+            "name": "FTPClientApp",
+            "request": "launch",
+            "mainClass": "client.FTPClientApp",
+            "projectName": "client"
+        },
+        {
+            "type": "java",
+            "name": "FPTClientApp",
+            "request": "launch",
+            "mainClass": "${file}"
         },
         {
             "type": "java",

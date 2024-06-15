@@ -6,11 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/*Điểm khởi đầu của ứng dụng client. */
-public class FTPClientApp extends Application{
+public class FTPClientApp extends Application {
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("views/LoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/client/views/LoginView.fxml"));
         primaryStage.setTitle("FTP Client");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();

@@ -1,3 +1,4 @@
+/*nói cho Gradle biết rằng dự án bao gồm hai module là client và server.*/
 rootProject.name = 'FTPClientApp'
 include 'client'
 include 'server'

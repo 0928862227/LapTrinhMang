@@ -4,10 +4,6 @@ plugins {
     id 'org.beryx.jlink' version '2.24.4'
 }
 
-application {
-    mainClass = "client.FTPClientApp"
-}
-
 repositories {
     mavenCentral()
 }
@@ -30,9 +26,15 @@ jlink {
     }
 }
 
+application {
+    mainClass = "org.openjfx.MainApp" // Đảm bảo mainClass là class chính của ứng dụng JavaFX
+    mainModule = "hellofx"
+}
+
 jar {
     manifest {
-        attributes 'Main-Class': 'client.FTPClientApp'
+        attributes 'Main-Class': 'org.openjfx.MainApp' 
+        // Đảm bảo Main-Class cho file JAR
     }
 }
 

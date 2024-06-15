@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'application'
 }
 
 repositories {
@@ -23,7 +23,9 @@ test {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
-
+application {
+    mainClass = 'server.TCPServer'
+}
 sourceCompatibility = '11'
 targetCompatibility = '11'
 

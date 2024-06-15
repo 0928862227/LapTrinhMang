@@ -30,7 +30,7 @@ public class RegisterController {
     @FXML
     private void showLogin() {
         try {
-            Parent loginView = FXMLLoader.load(getClass().getResource("/client/views/LoginView.fxml"));
+            Parent loginView = FXMLLoader.load(getClass().getResource("/views/LoginView.fxml"));
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setScene(new Scene(loginView));
         } catch (IOException e) {
