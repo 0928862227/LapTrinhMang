@@ -42,11 +42,7 @@ II. Xem Cơ Sở Dữ Liệu - SQLite
                 - Gõ .tables hoặc .schema để xem CSDL của hệ thống 
 
 
-III. Xây dựng, phát triển giao diện phía Client (JavaFX) 
-        -Link tải nền tảng JavaFX : https://gluonhq.com/products/javafx/ và công cụ thiết kế Scene Builder : https://gluonhq.com/products/scene-builder/#download
-        -Link hướng dẫn cài đặt : https://www.youtube.com/watch?v=AubJaosfI-0
-        - Đảm bảo rằng cấu hình launch.json chỉ định đúng module và đường dẫn JavaFX SDK
-        - Chỉ cài đặt ở phía module client .Nếu vướng phải nút thắt nào hãy đọc thêm docs này : https://openjfx.io/openjfx-docs/
+
 
 
       

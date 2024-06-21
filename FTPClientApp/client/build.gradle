@@ -1,7 +1,5 @@
 plugins {
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.1.0'
-    id 'org.beryx.jlink' version '2.24.4'
 }
 
 repositories {
@@ -9,42 +7,10 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.apache.sshd:sshd-core:2.7.0'
-    implementation 'org.openjfx:javafx-controls:17.0.2'
-    implementation 'org.openjfx:javafx-fxml:17.0.2'
-}
-
-javafx {
-    version = "17.0.2"
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
-}
-
-jlink {
-    options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-    launcher {
-        name = 'hellofx'
-    }
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'org.slf4j:jcl-over-slf4j:1.7.30'
 }
 
 application {
-    mainClass = "org.openjfx.MainApp" // Đảm bảo mainClass là class chính của ứng dụng JavaFX
-    mainModule = "hellofx"
+    mainClass = 'client.MainApp'
 }
-
-jar {
-    manifest {
-        attributes 'Main-Class': 'org.openjfx.MainApp' 
-        // Đảm bảo Main-Class cho file JAR
-    }
-}
-
-test {
-    useJUnitPlatform()
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}
-
-sourceCompatibility = '11'
-targetCompatibility = '11'

@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MainApp",
+            "request": "launch",
+            "mainClass": "client.MainApp",
+            "projectName": "client"
+        },
+        {
+            "type": "java",
             "name": "TCPClient",
             "request": "launch",
             "mainClass": "client.TCPClient",
