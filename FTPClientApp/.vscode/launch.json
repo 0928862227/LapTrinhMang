@@ -6,6 +6,34 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Client",
+            "request": "launch",
+            "mainClass": "client.Client",
+            "projectName": "client"
+        },
+        {
+            "type": "java",
+            "name": "SocketCl",
+            "request": "launch",
+            "mainClass": "client.SocketCl",
+            "projectName": "client"
+        },
+        {
+            "type": "java",
+            "name": "SocketSv",
+            "request": "launch",
+            "mainClass": "server.SocketSv",
+            "projectName": "server"
+        },
+        {
+            "type": "java",
+            "name": "Server",
+            "request": "launch",
+            "mainClass": "server.Server",
+            "projectName": "server"
+        },
+        {
+            "type": "java",
             "name": "MainApp",
             "request": "launch",
             "mainClass": "client.MainApp",
