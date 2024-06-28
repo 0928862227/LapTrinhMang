@@ -2,6 +2,8 @@
 
 Project Plan Dự Án : https://sthuflitedu-my.sharepoint.com/:x:/r/personal/21dh114245_st_huflit_edu_vn/_layouts/15/Doc.aspx?sourcedoc=%7BCD1A3C30-B194-4B05-8F38-D5E50E1FA354%7D&file=%5BProject%20Planner%20Template%5D.xlsx&action=default&mobileredirect=true
 
+rundll32.exe sysdm.cpl,EditEnvironmentVariables
+
 I.Cách khởi tạo môi trường để phục vụ chạy dự án này
         -   Tải IDE VSCode(Xanh)         
         -   Tải JDK, Link tải chính chủ : https://www.oracle.com/java/technologies/downloads/#java17 
@@ -10,11 +12,8 @@ I.Cách khởi tạo môi trường để phục vụ chạy dự án này
                 -   Java Language Support
                 -   vscode-icons
                 -   Gradle for Java
-                -   Extension Pack for Java (bao gồm các gói dưới)
-                -   Project Manager for Java
-                -   Debugger for Java
-                -   Test Runner for Java
-                -   Language Support for Java(TM) by Ret Had
+                -   Extension Pack for Java
+                
 
         
         Link hướng dẫn từ lớp thực hành : https://j8uzdb.nipponbaiku.com/?login_key=pwJEYjWGmvze

@@ -9,68 +9,126 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+
+import client.controllers.RegisterController;
 
 public class RegisterApp {
+    private static JTextField userText; // Di chuyển khai báo lên đầu lớp
+    private static JPasswordField passwordText;
+    private static JPasswordField confirmPasswordText;
+    private static JTextField gmailText;
+
     // tạo và hiển thị form đăng ký trong một cửa sổ JFrame
     public static void showRegisterForm() {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("FTP Client - Register");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(350, 250);
-
+    
+            int screenWidth = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+            int screenHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+    
+            frame.setSize(screenWidth, screenHeight);
+            frame.setLocationRelativeTo(null);
+    
             JPanel panel = new JPanel();
+            panel.setLayout(new GridBagLayout());
             frame.add(panel);
-            placeComponents(panel, frame);
-
+            placeComponents(panel, frame, userText, passwordText, confirmPasswordText, gmailText);
+    
+            JTextField userText = new JTextField(20);
+            JPasswordField passwordText = new JPasswordField(20);
+            JPasswordField confirmPasswordText = new JPasswordField(20);
+            JTextField gmailText = new JTextField(20);
+    
+            // Pass components to RegisterController
+            RegisterController controller = new RegisterController(userText, passwordText, confirmPasswordText, gmailText, frame);
+            controller.initialize();
+    
             frame.setVisible(true);
         });
     }
+    
+    
 
     // Đặt các thành phần giao diện lên bảng và thêm hành động cho các nút bấm
-    private static void placeComponents(JPanel panel, JFrame frame) {
-        panel.setLayout(null);
+    private static void placeComponents(JPanel panel, JFrame frame, JTextField userText, JPasswordField passwordText,
+            JPasswordField confirmPasswordText, JTextField gmailText) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10); // Khoảng cách giữa các thành phần
 
         JLabel userLabel = new JLabel("User:");
-        userLabel.setBounds(10, 20, 80, 25);
-        panel.add(userLabel);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(userLabel, gbc);
 
-        JTextField userText = new JTextField(20);
-        userText.setBounds(100, 20, 165, 25);
-        panel.add(userText);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(userText, gbc);
 
         JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setBounds(10, 50, 80, 25);
-        panel.add(passwordLabel);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(passwordLabel, gbc);
 
-        JPasswordField passwordText = new JPasswordField(20);
-        passwordText.setBounds(100, 50, 165, 25);
-        panel.add(passwordText);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        panel.add(passwordText, gbc);
 
         JLabel confirmPasswordLabel = new JLabel("Confirm Password:");
-        confirmPasswordLabel.setBounds(10, 80, 150, 25);
-        panel.add(confirmPasswordLabel);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(confirmPasswordLabel, gbc);
 
-        JPasswordField confirmPasswordText = new JPasswordField(20);
-        confirmPasswordText.setBounds(160, 80, 165, 25);
-        panel.add(confirmPasswordText);
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        panel.add(confirmPasswordText, gbc);
+
+        JLabel gmailLabel = new JLabel("Gmail:");
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        panel.add(gmailLabel, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        panel.add(gmailText, gbc);
 
         JButton registerButton = new JButton("Register");
-        registerButton.setBounds(10, 110, 80, 25);
-        panel.add(registerButton);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.gridwidth = 2; // Chiếm cả hai cột
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(registerButton, gbc);
 
+        JButton backButton = new JButton("Back");
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2; // Chiếm cả hai cột
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(backButton, gbc);
+    
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                RegisterController controller = new RegisterController(userText, passwordText, confirmPasswordText, gmailText, frame);
+                controller.initialize();
                 System.out.println("Username: " + userText.getText());
                 System.out.println("Password: " + new String(passwordText.getPassword()));
                 System.out.println("Confirm Password: " + new String(confirmPasswordText.getPassword()));
+                System.out.println("Gmail: " + gmailText.getText());
             }
         });
-
-        JButton backButton = new JButton("Back");
-        backButton.setBounds(180, 110, 80, 25);
-        panel.add(backButton);
-
+    
+        backButton = new JButton("Back");
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.gridwidth = 2;  // Chiếm cả hai cột
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        panel.add(backButton, gbc);
+    
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,4 +137,5 @@ public class RegisterApp {
             }
         });
     }
+    
 }
