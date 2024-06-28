@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class RegisterApp {
+    // tạo và hiển thị form đăng ký trong một cửa sổ JFrame
     public static void showRegisterForm() {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("FTP Client - Register");
@@ -25,6 +26,7 @@ public class RegisterApp {
         });
     }
 
+    // Đặt các thành phần giao diện lên bảng và thêm hành động cho các nút bấm
     private static void placeComponents(JPanel panel, JFrame frame) {
         panel.setLayout(null);
 

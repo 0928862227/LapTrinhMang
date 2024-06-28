@@ -5,15 +5,23 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class MainAppGUI {
+
+    // hiển thị giao diện chính của ứng dụng
     public static void showMainApp() {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("FTP Client - Main Application");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(400, 300);
+
+            // Thiết lập kích thước toàn màn hình
+            frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            frame.setUndecorated(true);
 
             JPanel panel = new JPanel();
             frame.add(panel);
@@ -23,17 +31,23 @@ public class MainAppGUI {
         });
     }
 
+    // bố trí các thành phần giao diện chính cửa sổ của ứng dụng
     private static void placeComponents(JPanel panel, JFrame frame) {
-        panel.setLayout(null);
+        panel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10); // Thêm khoảng cách giữa các thành phần
 
         JLabel welcomeLabel = new JLabel("Welcome to FTP Client");
-        welcomeLabel.setBounds(10, 20, 200, 25);
-        panel.add(welcomeLabel);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(welcomeLabel, gbc);
 
         JButton uploadFileButton = new JButton("Upload File");
-        uploadFileButton.setBounds(10, 50, 150, 25);
-        panel.add(uploadFileButton);
-
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(uploadFileButton, gbc);
         uploadFileButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -43,9 +57,10 @@ public class MainAppGUI {
         });
 
         JButton uploadVideoButton = new JButton("Upload Video");
-        uploadVideoButton.setBounds(10, 80, 150, 25);
-        panel.add(uploadVideoButton);
-
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(uploadVideoButton, gbc);
         uploadVideoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -55,9 +70,10 @@ public class MainAppGUI {
         });
 
         JButton viewFilesButton = new JButton("View Files");
-        viewFilesButton.setBounds(10, 110, 150, 25);
-        panel.add(viewFilesButton);
-
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(viewFilesButton, gbc);
         viewFilesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -67,9 +83,10 @@ public class MainAppGUI {
         });
 
         JButton viewVideosButton = new JButton("View Videos");
-        viewVideosButton.setBounds(10, 140, 150, 25);
-        panel.add(viewVideosButton);
-
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(viewVideosButton, gbc);
         viewVideosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,9 +96,10 @@ public class MainAppGUI {
         });
 
         JButton logoutButton = new JButton("Logout");
-        logoutButton.setBounds(10, 170, 150, 25);
-        panel.add(logoutButton);
-
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(logoutButton, gbc);
         logoutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,4 +108,5 @@ public class MainAppGUI {
             }
         });
     }
+
 }
