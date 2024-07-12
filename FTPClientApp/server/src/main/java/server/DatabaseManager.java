@@ -2,8 +2,11 @@ package server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import org.sqlite.SQLiteException;
 import java.sql.*;
-
 import model.File;
 import model.Folder;
 import model.Image;
@@ -11,7 +14,7 @@ import model.Image;
 public class DatabaseManager {
     private static final String URL = "jdbc:sqlite:server/database.db";
 
-    public static Connection connect() {
+    public static Connection connect() throws SQLiteException {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(URL);
@@ -32,7 +35,7 @@ public class DatabaseManager {
                         + " id       INTEGER PRIMARY KEY AUTOINCREMENT,\n"
                         + " username TEXT NOT NULL UNIQUE,\n"
                         + " password TEXT NOT NULL,\n"
-                        + " email    TEXT NOT NULL\n "
+                        + " email    TEXT NOT NULL UNIQUE \n "
                         + ");";
                 stmt.execute(sqlUsers);
                 System.out.println("Bảng users đã được tạo thành công.");

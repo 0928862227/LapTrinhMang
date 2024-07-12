@@ -1,8 +1,10 @@
 package server;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class SocketSv {
 
@@ -16,7 +18,10 @@ public class SocketSv {
                 Socket socket = serverSocket.accept();
                 System.out.println("Kết nối từ một client mới");
 
-                new ClientHandler(socket).start();
+                Scanner in = new Scanner(socket.getInputStream());
+                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+
+                new ClientHandler(socket, in, out).start();
             }
 
         } catch (IOException ex) {
@@ -24,4 +29,3 @@ public class SocketSv {
         }
     }
 }
-

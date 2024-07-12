@@ -1,6 +1,7 @@
 package client;
 
 import javax.swing.SwingUtilities;
+import client.controllers.User;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -13,45 +14,41 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
-import client.controllers.RegisterController;
-
 public class RegisterApp {
-    private static JTextField userText; // Di chuyển khai báo lên đầu lớp
-    private static JPasswordField passwordText;
-    private static JPasswordField confirmPasswordText;
-    private static JTextField gmailText;
-
-    // tạo và hiển thị form đăng ký trong một cửa sổ JFrame
+    // Tạo và hiển thị form đăng ký trong một cửa sổ JFrame
     public static void showRegisterForm() {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("FTP Client - Register");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    
+
+            // Lấy kích thước màn hình
             int screenWidth = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
             int screenHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
-    
+
+            // Đặt kích thước và vị trí để hiển thị toàn màn hình
             frame.setSize(screenWidth, screenHeight);
-            frame.setLocationRelativeTo(null);
-    
+            frame.setLocationRelativeTo(null); // Đặt vị trí cửa sổ vào giữa màn hình
+
             JPanel panel = new JPanel();
             panel.setLayout(new GridBagLayout());
             frame.add(panel);
+
+            // Initialize components
+            JTextField userText = new JTextField(12); // Điều chỉnh kích thước của ô nhập thông tin
+            JPasswordField passwordText = new JPasswordField(12);
+            JPasswordField confirmPasswordText = new JPasswordField(12);
+            JTextField gmailText = new JTextField(12);
+
             placeComponents(panel, frame, userText, passwordText, confirmPasswordText, gmailText);
-    
-            JTextField userText = new JTextField(20);
-            JPasswordField passwordText = new JPasswordField(20);
-            JPasswordField confirmPasswordText = new JPasswordField(20);
-            JTextField gmailText = new JTextField(20);
-    
+
             // Pass components to RegisterController
-            RegisterController controller = new RegisterController(userText, passwordText, confirmPasswordText, gmailText, frame);
+            User controller = new User(userText, passwordText, confirmPasswordText,
+                    gmailText, frame);
             controller.initialize();
-    
+
             frame.setVisible(true);
         });
     }
-    
-    
 
     // Đặt các thành phần giao diện lên bảng và thêm hành động cho các nút bấm
     private static void placeComponents(JPanel panel, JFrame frame, JTextField userText, JPasswordField passwordText,
@@ -66,7 +63,7 @@ public class RegisterApp {
 
         gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.fill = GridBagConstraints.NONE;
         panel.add(userText, gbc);
 
         JLabel passwordLabel = new JLabel("Password:");
@@ -99,36 +96,33 @@ public class RegisterApp {
         JButton registerButton = new JButton("Register");
         gbc.gridx = 0;
         gbc.gridy = 4;
-        gbc.gridwidth = 2; // Chiếm cả hai cột
+        gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(registerButton, gbc);
 
         JButton backButton = new JButton("Back");
         gbc.gridx = 0;
         gbc.gridy = 5;
-        gbc.gridwidth = 2; // Chiếm cả hai cột
+        gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(backButton, gbc);
-    
+
+        User controller = new User(userText, passwordText, confirmPasswordText,
+                gmailText, frame);
+        controller.initialize();
+
+        // Move the action listener for registerButton here
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                RegisterController controller = new RegisterController(userText, passwordText, confirmPasswordText, gmailText, frame);
-                controller.initialize();
+                controller.registerUser();
                 System.out.println("Username: " + userText.getText());
                 System.out.println("Password: " + new String(passwordText.getPassword()));
                 System.out.println("Confirm Password: " + new String(confirmPasswordText.getPassword()));
                 System.out.println("Gmail: " + gmailText.getText());
             }
         });
-    
-        backButton = new JButton("Back");
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.gridwidth = 2;  // Chiếm cả hai cột
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(backButton, gbc);
-    
+
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -137,5 +131,4 @@ public class RegisterApp {
             }
         });
     }
-    
 }
