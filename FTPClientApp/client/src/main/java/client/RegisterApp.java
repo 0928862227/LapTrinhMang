@@ -41,11 +41,6 @@ public class RegisterApp {
 
             placeComponents(panel, frame, userText, passwordText, confirmPasswordText, gmailText);
 
-            // Pass components to RegisterController
-            User controller = new User(userText, passwordText, confirmPasswordText,
-                    gmailText, frame);
-            controller.initialize();
-
             frame.setVisible(true);
         });
     }
@@ -107,19 +102,21 @@ public class RegisterApp {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panel.add(backButton, gbc);
 
-        User controller = new User(userText, passwordText, confirmPasswordText,
-                gmailText, frame);
+        User controller = new User(userText, passwordText, confirmPasswordText, gmailText, frame);
         controller.initialize();
-
-        // Move the action listener for registerButton here
+        // Xử lý sự kiện khi ấn nút đăng nhập
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                // kích hoạt chức năng đăng nhập
                 controller.registerUser();
+
+                // hiển thị dữ liệu ra terminal
                 System.out.println("Username: " + userText.getText());
                 System.out.println("Password: " + new String(passwordText.getPassword()));
                 System.out.println("Confirm Password: " + new String(confirmPasswordText.getPassword()));
-                System.out.println("Gmail: " + gmailText.getText());
+                System.out.println("email: " + gmailText.getText());
             }
         });
 
@@ -130,5 +127,9 @@ public class RegisterApp {
                 MainApp.main(null);
             }
         });
+    }
+
+    public static void main(String[] args) {
+        showRegisterForm();
     }
 }

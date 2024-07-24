@@ -1,36 +1,78 @@
 package server;
 
-//import java.io.BufferedReader;
+import java.io.BufferedReader;
 import java.io.IOException;
-//import java.io.InputStreamReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
+import java.nio.charset.StandardCharsets;
 
 public class ClientHandler extends Thread {
 
-    private final Socket socket;
-    private final Scanner in;
-    private final PrintWriter out;
+    private Socket socket;
+    private BufferedReader in;
+    private PrintWriter out;
 
-    public ClientHandler(Socket socket, Scanner in, PrintWriter out) {
+    public ClientHandler(Socket socket) throws IOException {
         this.socket = socket;
-        this.in = in;
-        this.out = out;
+        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+        this.out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8), true);
     }
 
     @Override
     public void run() {
         try {
-            handleClient();
-        } catch (Exception e) {
+            String request = in.readLine();
+            if (request != null) {
+                String[] parts = request.split("\\s+");
+                String command = parts[0];
+
+                switch (command) {
+                    case "CHECK_EMAIL":
+                        if (parts.length > 1) {
+                            String emailToCheck = parts[1];
+                            boolean exists = isEmailExists(emailToCheck);
+                            out.println(exists ? "EMAIL_EXISTS" : "EMAIL_NOT_EXISTS");
+                        } else {
+                            out.println("INVALID_COMMAND");
+                        }
+                        break;
+                    case "REGISTER":
+                        if (parts.length > 3) {
+                            String username = parts[1];
+                            String password = parts[2];
+                            String email = parts[3];
+                            try {
+                                boolean success = DatabaseManager.createUser(username, password, email);
+                                if (success) {
+                                    out.println("Đăng ký thành công");
+                                } else {
+                                    out.println("Đăng ký thất bại");
+                                }
+                            } catch (Exception e) {
+                                out.println("Lỗi đăng ký: " + e.getMessage());
+                            }
+                        } else {
+                            out.println("INVALID_COMMAND");
+                        }
+                        break;
+                    default:
+                        out.println("UNKNOWN_COMMAND");
+                        break;
+                }
+            }
+
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
+                in.close();
+                out.close();
                 socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -38,58 +80,16 @@ public class ClientHandler extends Thread {
         }
     }
 
-    private void handleClient() {
-        String request = in.nextLine();
-        String[] parts = request.split("\\s+");
-        String command = parts[0];
-
-        switch (command) {
-            case "CHECK_EMAIL":
-                String emailToCheck = parts[1];
-                boolean exists = isEmailExists(emailToCheck);
-                out.println(exists ? "GMAIL_EXISTS" : "GMAIL_NOT_EXISTS");
-                break;
-            case "REGISTER":
-                String username = parts[1];
-                String password = parts[2];
-                String gmail = parts[3];
-                boolean registrationSuccessful = registerUser(username, password, gmail);
-                out.println(registrationSuccessful ? "Đăng ký thành công" : "Đăng ký thất bại");
-                break;
-            default:
-                out.println("UNKNOWN_COMMAND_CLIENT");
-                break;
-        }
-    }
-
-    private boolean registerUser(String username, String password, String gmail) {
-        String sql = "INSERT INTO users(username, password, email) VALUES(?, ?, ?)";
-        try (Connection conn = DatabaseManager.connect();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
-            pstmt.setString(3, gmail);
-            pstmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
+    // Lấy thông tin từ Client và kiểm tra xem Data đã có gmail này hay chưa
     private boolean isEmailExists(String email) {
-        String sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
-        try (Connection conn = DatabaseManager.connect();
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, email);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt("count");
-                return count > 0;
-            }
+        try (Connection connection = DatabaseManager.connect();
+                PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE email = ?")) {
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 }

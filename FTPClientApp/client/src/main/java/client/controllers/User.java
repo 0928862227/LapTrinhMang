@@ -11,6 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 
+import client.MainApp;
+
 public class User {
     private JTextField userText;
     private JPasswordField passwordText;
@@ -22,6 +24,8 @@ public class User {
     private PrintWriter out;
     private Scanner in;
 
+    private RegisterController registerController;
+
     public User(JTextField userText, JPasswordField passwordText, JPasswordField confirmPasswordText,
             JTextField gmailText, JFrame frame) {
         this.userText = userText;
@@ -29,6 +33,11 @@ public class User {
         this.confirmPasswordText = confirmPasswordText;
         this.gmailText = gmailText;
         this.frame = frame;
+        try {
+            this.registerController = new RegisterController("localhost", 12345);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initialize() {
@@ -41,37 +50,41 @@ public class User {
         }
     }
 
-    // Hàm xử lý chức năng đăng ký
+    // Hàm xử lý logic đăng ký
     public void registerUser() {
         String username = userText.getText();
         String password = new String(passwordText.getPassword());
         String confirmPassword = new String(confirmPasswordText.getPassword());
-        String gmail = gmailText.getText();
+        String email = gmailText.getText();
 
         if (!password.equals(confirmPassword)) {
             showErrorDialog("Invalid Input", "Passwords do not match!");
             return;
-        } else if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || gmail.isEmpty()) {
+        } else if (username.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || email.isEmpty()) {
             showErrorDialog("Invalid Input", "Please fill in all fields.");
             return;
-        } else if (!isValidEmail(gmail)) {
+        } else if (!isValidEmail(email)) {
             showErrorDialog("Invalid Input", "Please enter a valid Gmail address.");
             return;
-        } else if (isEmailExists(gmail)) {
+        } else if (registerController.isEmailExists(email)) {
             showErrorDialog("Invalid Input", "Gmail already exists.");
             return;
         }
 
-        // Send registration details to the server
-        out.println("REGISTER " + username + " " + password + " " + gmail);
-
-        // Read server response
-        String response = in.nextLine();
-        if (response.equals("SUCCESS")) {
-            System.out.println("Registration successful!");
-            // Proceed to next step, like login or main application screen
-        } else {
-            System.out.println("Registration failed: " + response);
+        // Khi nhận được thông báo đăng ký thành công, sẽ hiển thị thông báo và quay lại
+        // màn hình đăng nhập.
+        try {
+            boolean succes = registerController.register(username, password, email);
+            if (succes) {
+                JOptionPane.showMessageDialog(frame, "Đăng ký thành công!");
+                frame.dispose();
+                MainApp.main(null);
+            } else {
+                JOptionPane.showMessageDialog(frame, "Đăng ký thất bại!");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame, "Error: " + e.getMessage());
         }
     }
 
@@ -80,21 +93,11 @@ public class User {
         JOptionPane.showMessageDialog(frame, message, title, JOptionPane.ERROR_MESSAGE);
     }
 
-    // Kiểm tra tính hợp lệ của gmail
+    // Logic Kiểm tra tính hợp lệ của gmail
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9._%+-]+@gmail\\.com$";
         Pattern pat = Pattern.compile(emailRegex);
         return pat.matcher(email).matches();
-    }
-
-    // Kiểm tra tính tồn tại của gmail
-    private boolean isEmailExists(String email) {
-        // Send request to server to check if email exists
-        out.println("CHECK_EMAIL " + email);
-
-        // Read server response
-        String response = in.nextLine();
-        return response.equals("EXISTS");
     }
 
     public void close() {

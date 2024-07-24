@@ -432,12 +432,10 @@ public class DatabaseManager {
 
         // createUser("nhu", "123", "nhu12@gmail.com");
 
-        /*
-         * List<String> users = readAllUsers();
-         * for (String user : users) {
-         * System.out.println(user);
-         * }
-         */
+        List<String> users = readAllUsers();
+        for (String user : users) {
+            System.out.println(user);
+        }
 
         // updateUser(1, "updateduser", "updatedpassword", "updateduser@example.com");
 
